@@ -6,16 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,18 +19,37 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WelcomeScreen()
+            AppNavigation()
         }
     }
 }
 
 @Composable
-fun WelcomeScreen() {
+fun AppNavigation() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "welcome") {
+        composable("welcome") {
+            WelcomeScreen(navController)
+        }
+        composable("registro") {
+            RegistroScreen()
+        }
+    }
+}
+
+// Login
+@Composable
+fun WelcomeScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -90,7 +103,8 @@ fun WelcomeScreen() {
                 .width(280.dp)
                 .height(50.dp)
                 .border(width = 1.dp, color = Color(0xFF424095), shape = RoundedCornerShape(25.dp))
-                .background(color = Color.White, shape = RoundedCornerShape(25.dp)),
+                .background(color = Color.White, shape = RoundedCornerShape(25.dp))
+                .clickable { navController.navigate("registro") },
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -99,6 +113,66 @@ fun WelcomeScreen() {
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )
+        }
+    }
+}
+
+// REGISTRO (Me la traje de tu otro proyecto)
+@Composable
+fun RegistroScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Registro",
+            fontSize = 28.sp,
+            modifier = Modifier.padding(bottom = 32.dp)
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Nombre") },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Correo") },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Contraseña") },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Confirmar Contraseña") },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Teléfono") },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
+        )
+
+        Button(
+            onClick = {},
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Registrar", fontSize = 18.sp)
         }
     }
 }
