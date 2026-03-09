@@ -1,7 +1,8 @@
-# Pantalla Principal - Little Drop
+# Pantallas y Navegación - Little Drop
 
-**Descripción:** Réplica de la pantalla de inicio pa la app "Little Drop" 
+**Descripción:** Pantallas de inicio y registro para la app "Little Drop", conectadas con navegation.
 
 **Detalles:**
-* No incluye funcionalidad, solo diseño.
-* Se utilizó unicamente: `Column`, `Box`, `Text` e `Image`.
+* **Navegación:** El botón "Sign Up" redirige al formulario de registro.
+* **Pantallas:** `WelcomeScreen` (Bienvenida) y `RegistroScreen` (Registro).
+* **Componentes:** Se utilizaron `Column`, `Box`, `Text`, `Image`, `Button` y `OutlinedTextField`.
