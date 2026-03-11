@@ -122,7 +122,7 @@ fun WelcomeScreen(navController: NavController) {
     }
 }
 
-// Regsitro
+// Regsitroo
 @Composable
 fun RegistroScreen() {
     // Estados
