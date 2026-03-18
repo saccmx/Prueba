@@ -4,5 +4,6 @@
 
 **Detalles:**
 * **Navegación:** El botón "Sign Up" redirige al formulario de registro.
-* **Pantallas:** `WelcomeScreen` (Bienvenida) y `RegistroScreen` (Registro).
+* **Pantallas:** `WelcomeScreen` y `RegistroScreen`, y la tarea de contactos como `ContactosScreen`.
 * **Componentes:** Se utilizaron `Column`, `Box`, `Text`, `Image`, `Button` y `OutlinedTextField`.
+
