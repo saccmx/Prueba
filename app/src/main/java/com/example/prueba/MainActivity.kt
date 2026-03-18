@@ -9,10 +9,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -49,10 +52,13 @@ fun AppNavigation() {
         composable("registro") {
             RegistroScreen()
         }
+        composable("contactos") {
+            ContactosScreen()
+        }
     }
 }
 
-// Login
+// Login / Menú Principal
 @Composable
 fun WelcomeScreen(navController: NavController) {
     Column(
@@ -119,10 +125,28 @@ fun WelcomeScreen(navController: NavController) {
                 fontSize = 16.sp
             )
         }
+
+        // BOTÓN PA LA TAREA CONTACTOS
+        Box(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .width(280.dp)
+                .height(50.dp)
+                .background(color = Color(0xFF4CAF50), shape = RoundedCornerShape(25.dp))
+                .clickable { navController.navigate("contactos") },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Tarea Contactos",
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+        }
     }
 }
 
-// Regsitroo
+// Registro
 @Composable
 fun RegistroScreen() {
     // Estados
@@ -138,7 +162,6 @@ fun RegistroScreen() {
     val contrasenasIguales = contrasena.isNotEmpty() && contrasena == confirmar
     val telefonoValido = telefono.length == 10 && telefono.all { it.isDigit() }
 
-    // El botón se activa soolo si es valido
     val formularioValido = nombreValido && correoValido && contrasenasIguales && telefonoValido
 
     Column(
@@ -158,7 +181,7 @@ fun RegistroScreen() {
             value = nombre,
             onValueChange = { nombre = it },
             label = { Text("Nombre") },
-            isError = nombre.isNotEmpty() && !nombreValido, // Muestra error en rojo
+            isError = nombre.isNotEmpty() && !nombreValido,
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
         )
 
@@ -195,10 +218,103 @@ fun RegistroScreen() {
 
         Button(
             onClick = {},
-            enabled = formularioValido, // DesactivaR el botón si hay errore
+            enabled = formularioValido,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Registrar", fontSize = 18.sp)
+        }
+    }
+}
+
+// Tarea Contactos
+@Composable
+fun ContactosScreen() {
+    // Variables
+    var nombre by remember { mutableStateOf("") }
+    var telefono by remember { mutableStateOf("") }
+
+    val listaContactos = remember { mutableStateListOf<Pair<String, String>>() }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Mis Contactos",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 24.dp)
+        )
+
+        // Campos de texto
+        OutlinedTextField(
+            value = nombre,
+            onValueChange = { nombre = it },
+            label = { Text("Nombre") },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+        )
+
+        OutlinedTextField(
+            value = telefono,
+            onValueChange = { telefono = it },
+            label = { Text("Teléfono") },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+        )
+
+        // Botón Agregarrr
+        Button(
+            onClick = {
+                // Solo agrega si los campos no están vacíos
+                if (nombre.isNotBlank() && telefono.isNotBlank()) {
+                    listaContactos.add(Pair(nombre, telefono))
+                    nombre = "" // Limpia el campo nombre
+                    telefono = "" // Limpia el campo teléfono
+                }
+            },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+        ) {
+            Text("Agregar Contacto")
+        }
+
+        // Botónn Limpiar Campos
+        OutlinedButton(
+            onClick = {
+                nombre = ""
+                telefono = ""
+            },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
+        ) {
+            Text("Limpiar Campos")
+        }
+
+        HorizontalDivider(modifier = Modifier.padding(bottom = 16.dp))
+
+        Text(
+            text = "LISTA DE CONTACTOS",
+            fontSize = 12.sp,
+            color = Color.Gray,
+            modifier = Modifier.align(Alignment.Start).padding(bottom = 8.dp)
+        )
+
+        // Lista
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(listaContactos) { contacto ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(text = contacto.first, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        Text(text = contacto.second, color = Color.Gray, fontSize = 14.sp)
+                    }
+                }
+            }
         }
     }
 }
